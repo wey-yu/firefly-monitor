@@ -53,6 +53,8 @@
           if(jsonData.find(gateway=>{
             `${gateway.name}:${gateway.id}`
           }) == undefined) {
+            this.selectedGateway = `${gateway.name}:${gateway.id}`;
+            this.update()
             this.opts.broker.emit(
               "gateways-list:click:id", 
               `${jsonData[0].name}:${jsonData[0].id}`
@@ -68,6 +70,7 @@
 
     route((nameAndId) => {
       this.selectedGateway = nameAndId;
+      this.update()
       this.opts.broker.emit("gateways-list:click:id", nameAndId)
     })
 
