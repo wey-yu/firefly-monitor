@@ -1,0 +1,81 @@
+<gateways-list class="ui container segment" style="font-size:16px">
+
+  <h4 class="ui header">Gateways</h4>
+  <table class="ui celled table">
+    <thead>
+      <tr>
+        <th>Gateway ID ({selectedGateway})</th>
+        <th>Url</th>
+        <th>Version</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr each={ gateways }>
+        <td><i class="info circle icon"></i><a href="#{name}:{id}">{name}:{id}</a> {description}</td>
+        <td><i class="world icon"></i>{url}</td>
+        <td>{version}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="5">
+
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+
+  <script>
+    console.log('=== gateways-list ===')
+    this.opts.broker.observe(this)
+
+    this.selectedGateway = null;
+
+    this.updateGatewaysList = () => {
+      fetch('/gateways/details', {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => response.json())
+      .then(jsonData => {
+        // update display only if new data (new gateway(s))
+        if(jsonData.isNotSameAs(this.gateways)) {
+          this.gateways = jsonData
+          this.update()
+          console.good("updated", this.gateways)
+
+          // if no gateway selected
+          // or
+          // if the selected gateway does not exist anymore in the list
+          // then select the first gateway
+          if(jsonData.find(gateway=>{
+            `${gateway.name}:${gateway.id}`
+          }) == undefined) {
+            this.opts.broker.emit(
+              "gateways-list:click:id", 
+              `${jsonData[0].name}:${jsonData[0].id}`
+            )
+          }
+        }
+      })
+      .catch(error => console.error(error))
+    }
+    this.updateGatewaysList() // first fetch of gateways list
+
+    const timer = setInterval(this.updateGatewaysList, 1000)
+
+    route((nameAndId) => {
+      this.selectedGateway = nameAndId;
+      this.opts.broker.emit("gateways-list:click:id", nameAndId)
+    })
+
+    route("/", () => {})
+
+    this.on('unmount', () => {
+      clearInterval(timer)
+    })
+
+  </script>
+</gateways-list>

@@ -1,0 +1,31 @@
+{
+  "name": "firefly-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wey-yu/firefly-monitor.git"
+  },
+  "keywords": [],
+  "author": "@k33g_org",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wey-yu/firefly-monitor/issues"
+  },
+  "homepage": "https://github.com/wey-yu/firefly-monitor#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.1",
+    "firefly-consumer": "git+https://github.com/thespacefirefly/firefly-consumer.git",
+    "node-fetch": "^1.6.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}

@@ -1,0 +1,150 @@
+<display-charts class="ui container segment" style="font-size:16px">
+
+  <h4 class="ui header">Gateway: {gateway_id}</h4>
+
+  <table class="ui celled table">
+    <thead>
+      <tr>
+        <th>Sensor ID</th>
+        <th>Value</th>
+        <th>Unit</th>
+        <th>Kind</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr each={ temperatureSensors }>
+        <td>{id}</td>
+        <td>{value}</td>
+        <td>{unit}</td>
+        <td>{kind}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="5">
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="ui grid">
+    <div id="lineChartContainer" class="ten wide column">
+    </div>
+  </div>
+
+  <table class="ui celled table">
+    <thead>
+      <tr>
+        <th>Sensor ID</th>
+        <th>Value</th>
+        <th>Unit</th>
+        <th>Kind</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr each={ humiditySensors }>
+        <td>{id}</td>
+        <td>{value}</td>
+        <td>{unit}</td>
+        <td>{kind}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="5">
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+  
+  <div class="ui grid">
+    <div id="lineChartContainerHumidity" class="ten wide column">
+    </div>
+  </div>
+  
+  <script>
+    console.log('=== display-informations ===')
+
+    this.opts.broker.observe(this)
+    this.gateway_id =""
+    this.timerData = null;
+
+    this.getTemperatureSensors = (gateway_id) => {
+      return fetch(`/gateways/${gateway_id}/sensors/temperature/values`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+      }).then(data => data.json())
+    }
+
+    this.getHumiditySensors = (gateway_id) => {
+      return fetch(`/gateways/${gateway_id}/sensors/humidity/values`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+      }).then(data => data.json())
+    }
+
+    this.updateGraphs = (dataSource, label, chartId) => {
+      let data = dataSource.map(sensor => {
+        return { label: `${label} ${sensor.id}`, values: []}
+      })
+      const myLineChart = $(chartId).epoch({
+        type: 'time.line',
+        axes: ['left', 'bottom', 'right'],
+        data: data
+      });
+
+      let t = (new Date()).getTime()
+      let metrics = dataSource.map(sensor => {
+        return { time: t, y: sensor.value}
+      })
+      myLineChart.push(metrics)
+      this.update();
+    }
+
+    this.updateData = (gateway_id) => {
+      this.getTemperatureSensors(gateway_id)
+        .then(jsonData => {
+          this.temperatureSensors = jsonData
+          // update data of the graph
+          this.updateGraphs(this.temperatureSensors, "Temperature", "#lineChart")          
+        }) 
+
+      this.getHumiditySensors(gateway_id).
+        then(jsonData => {
+          this.humiditySensors = jsonData
+          // update data of the graph
+          this.updateGraphs(this.humiditySensors, "Humidity", "#lineChartHumidity")          
+        })       
+    }
+
+    this.runTimer = (gateway_id) => {
+      clearInterval(this.timerData)
+      let refreshData = ()=> {this.updateData(gateway_id) }
+      this.timerData = setInterval(refreshData, 1000)
+    }
+
+    // when a new gateway is selected
+    // remove and recreate graphs
+    this.on("gateways-list:click:id", (gateway_id) => {
+      console.info("🐱", gateway_id)
+      this.gateway_id = gateway_id
+
+      this.getTemperatureSensors(gateway_id).then(jsonData => {
+        this.temperatureSensors = jsonData
+        $('#lineChartContainer').html('');
+        $('#lineChartContainer').html(`<div id="lineChart" style="width: 150%; height: 150px" class="epoch"></div>`);
+      })
+
+      this.getHumiditySensors(gateway_id).then(jsonData => {
+        this.humiditySensors = jsonData
+        $('#lineChartContainerHumidity').html('');
+        $('#lineChartContainerHumidity').html(`<div id="lineChartHumidity" style="width: 150%; height: 150px" class="epoch"></div>`);
+      })
+
+      // restart the timer
+      this.runTimer(gateway_id)
+     
+    })
+
+  </script>
+</display-charts>

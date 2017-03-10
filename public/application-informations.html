@@ -1,0 +1,104 @@
+<application-informations class="ui container segment" style="font-size:16px">
+
+  <!--
+  <h4 class="ui header">Application informations</h4>
+  -->
+
+  <div class="ui message">
+
+    <div class="content">
+      <div class="header">
+        <i class="notched circle loading icon"></i> Application informations: {message}
+      </div>
+      <p>
+        <b>APP_ID:</b> {APP_ID} |
+        <b>{WHOAMI}</b> |
+        <b>INSTANCE_ID:</b> {INSTANCE_ID.substring(0,5)+"..."} |
+        <b>COMMIT_ID:</b> {COMMIT_ID.substring(0,5)+"..."}
+      </p>
+    </div>
+  </div>
+
+
+  <script>
+
+    this.opts.broker.observe(this)
+
+    this.APP_ID = "🕓";
+    this.INSTANCE_ID = "🕖";
+    this.INSTANCE_TYPE = "🕦";
+    this.COMMIT_ID = "🕡";
+    this.INSTANCE_NUMBER = "🕙";
+    this.WHOAMI = "🕚";
+    this.d = "🕟";
+
+
+
+    updateApplicationInformations() {
+
+      fetch('/discovery-server/informations',{
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        
+        this.message = data.informations
+        this.update()
+      })
+      .catch(error => console.error(error))
+
+
+
+      fetch('/env/vars', {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => response.json())
+      .then(informations => {
+
+        if(this.COMMIT_ID !== informations.COMMIT_ID) {
+          this.opts.broker.emit("app:change:COMMIT_ID", {
+            old_commit_id: this.COMMIT_ID,
+            new_commit_id: informations.COMMIT_ID
+          });
+        }
+
+        if(this.INSTANCE_ID !== informations.INSTANCE_ID) {
+          this.opts.broker.emit("app:change:INSTANCE_ID", {
+            old_instance_id: this.INSTANCE_ID,
+            new_instance_id: informations.INSTANCE_ID
+          });
+        }
+
+        if(this.WHOAMI !== informations.WHOAMI) {
+          this.opts.broker.emit("app:change:WHOAMI", {
+            old_whoami_id: this.WHOAMI,
+            new_whoami_id: informations.WHOAMI
+          });
+        }
+
+        // try with https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+        // Object.assign()
+        this.APP_ID = informations.APP_ID;
+        this.INSTANCE_ID = informations.INSTANCE_ID;
+        this.INSTANCE_TYPE = informations.INSTANCE_TYPE;
+        this.COMMIT_ID = informations.COMMIT_ID;
+        this.INSTANCE_NUMBER = informations.INSTANCE_NUMBER;
+        this.WHOAMI = informations.WHOAMI;
+
+        this.update()
+
+      })
+      .catch(error => console.error(error))
+    }
+
+    const timer = setInterval(this.updateApplicationInformations, 1000)
+
+  </script>
+
+</application-informations>
