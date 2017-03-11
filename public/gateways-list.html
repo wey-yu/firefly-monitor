@@ -46,19 +46,27 @@
           this.update()
           console.good("updated", this.gateways)
 
-          // if no gateway selected
-          // or
-          // if the selected gateway does not exist anymore in the list
-          // then select the first gateway
-          if(jsonData.find(gateway=>{
-            `${gateway.name}:${gateway.id}`
-          }) == undefined) {
-            this.selectedGateway = `${gateway.name}:${gateway.id}`;
+          let updateSelectedGateway = gatewayId => {
+            this.selectedGateway = gatewayId
             this.update()
             this.opts.broker.emit(
               "gateways-list:click:id", 
-              `${jsonData[0].name}:${jsonData[0].id}`
+              this.selectedGateway
             )
+          }
+
+          // if no gateway selected
+          if(this.selectedGateway === null) {
+            updateSelectedGateway(`${jsonData[0].name}:${jsonData[0].id}`)
+          }
+
+          // if the selected gateway does not exist anymore in the list
+          // then select the first gateway
+          if(jsonData.find(gateway => {
+            return `${gateway.name}:${gateway.id}`
+          }) == undefined) {
+            
+            updateSelectedGateway(`${jsonData[0].name}:${jsonData[0].id}`)
           }
         }
       })
