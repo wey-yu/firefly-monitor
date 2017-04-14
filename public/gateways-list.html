@@ -5,14 +5,14 @@
     <thead>
       <tr>
         <th>Gateway ID ({selectedGateway})</th>
-        <th>Url</th>
+        <th>Description</th>
         <th>Version</th>
       </tr>
     </thead>
     <tbody>
       <tr each={ gateways }>
-        <td><i class="info circle icon"></i><a href="#{name}:{id}">{name}:{id}</a> {description}</td>
-        <td><i class="world icon"></i>{url}</td>
+        <td><i class="info circle icon"></i><a href="#{name}:{id}">{name}:{id}</a></td>
+        <td>{description}</td>
         <td>{version}</td>
       </tr>
     </tbody>
