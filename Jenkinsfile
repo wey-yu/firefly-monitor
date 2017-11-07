@@ -13,9 +13,14 @@ node {
   stage('🚢 Check if Deploy') {
     println("☘️" + env.BRANCH_NAME)
     if(env.BRANCH_NAME.equals("master")) {
-      stage('Deploy 🚀') {
-        println("🎉 it's time to deploy")
+      stage('Deploy to production 🚀') {
+        println("🎉 it's time to deploy to Clever-Cloud 🍾")
         //it's done automatically by Clever-Cloud
+      }
+    } else {
+      stage('Time to test 🚧') {
+        println("👷 it's time to test")
+        // call the API
       }
     }
   }
