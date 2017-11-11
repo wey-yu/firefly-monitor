@@ -46,7 +46,7 @@ node {
         sh "git checkout master"
         sh "git branch"
                 
-        //sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${result}.git"
+        sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${result}.git"
         sh "git push clever master"
 
         //sh "exit 0"
