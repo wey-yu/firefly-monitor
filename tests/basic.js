@@ -2,6 +2,8 @@
 // this is a test
 const assert = require('chai').assert;
 
+console.log("yo")
+
 describe("geek value equals 42", () => {
   let geek = 42;
   it("should return 42", () => {
