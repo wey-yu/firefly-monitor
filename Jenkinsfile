@@ -40,6 +40,11 @@ node {
         sh "clever env set PORT 8080 --alias firefly-test-${version}"
         sh "clever scale --flavor pico --alias firefly-test-${version}"
         
+        sh "git add ."
+        sh '''git commit -m "🚀" '''
+        
+        
+        
         sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${result}.git"
         sh "git push clever master"
        
