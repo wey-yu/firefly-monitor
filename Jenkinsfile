@@ -20,7 +20,9 @@ node {
     } else {
       stage('Time to test 🚧') {
         println("👷 it's time to test")
-
+        def nodeHome = tool name: 'nodejs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+        env.PATH = "${nodeHome}/bin:${env.PATH}"
+        ssh "clever help"
         // call the API
       }
     }
