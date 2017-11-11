@@ -25,7 +25,7 @@ node {
         sh "clever create -t node firefly-test-02 --org wey-yu --region par --alias firefly-test-02"
         sh "clever env set PORT 8080 --alias firefly-test-02"
         sh "clever scale --flavor pico --alias firefly-test-02"
-        sh "app_id=$(grep -oP '(?<="app_id": ")[^"]*' .clever.json)"
+        sh '''app_id=$(grep -oP '(?<="app_id": ")[^"]*' .clever.json)'''
         sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/$app_id.git"
         sh "git push clever master"
         //sh "exit 0"
