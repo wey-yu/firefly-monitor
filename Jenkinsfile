@@ -22,7 +22,7 @@ node {
         println("👷 it's time to test")
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
         env.PATH = "${nodeHome}/bin:${env.PATH}"
-        //sh "clever help"
+        
         sh '''
         clever create -t node firefly-test --org wey-yu --region par --alias firefly-test
         clever env set PORT 8080 --alias firefly-test
