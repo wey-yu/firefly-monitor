@@ -1,4 +1,3 @@
-import groovy.json.JsonSlurper
 
 node {
   stage('🚧 Checkout') {
@@ -23,16 +22,12 @@ node {
       stage('Time to test 🚧') {
         println("👷 it's time to test")
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-        def version = "06"
+        def version = "07"
         env.PATH = "${nodeHome}/bin:${env.PATH}"
         sh "rm .clever.json"
         sh "clever create -t node firefly-test-${version} --org wey-yu --region par --alias firefly-test-${version}"
         
-        def inputFile = new File(".clever.json")
-        def InputJSON = new JsonSlurper().parseText(inputFile.text)
-        InputJSON.each{ println it }
-        
-        sh "ls"
+        sh "ls -a"
         sh "clever create -t node firefly-test-03 --org wey-yu --region par --alias firefly-test-03"
         sh "clever env set PORT 8080 --alias firefly-test-03"
         sh "clever scale --flavor pico --alias firefly-test-03"
