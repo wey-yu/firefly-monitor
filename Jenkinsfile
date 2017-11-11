@@ -20,7 +20,7 @@ node {
     } else {
       stage('Time to test 🚧') {
         println("👷 it's time to test")
-        def nodeHome = tool name: 'nodejs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+        def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
         env.PATH = "${nodeHome}/bin:${env.PATH}"
         //sh "clever help"
         sh "clever create -t node firefly-test --org wey-yu --region par --alias firefly-test"
