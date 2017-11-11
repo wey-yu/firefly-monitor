@@ -21,7 +21,9 @@ node {
       stage('Time to test 🚧') {
         println("👷 it's time to test")
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+        def version = "04"
         env.PATH = "${nodeHome}/bin:${env.PATH}"
+        sh "clever create -t node firefly-test-${version} --org wey-yu --region par --alias firefly-test-${version}"
         sh "ls"
         sh "cat .clever.json"
         //sh "clever create -t node firefly-test-03 --org wey-yu --region par --alias firefly-test-03"
