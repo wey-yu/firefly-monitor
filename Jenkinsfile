@@ -23,16 +23,19 @@ node {
       stage('Time to test 🚧') {
         println("👷 it's time to test")
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-        def version = "14"
+        def version = "15"
         env.PATH = "${nodeHome}/bin:${env.PATH}"
         sh "rm .clever.json"
         sh "clever create -t node firefly-test-${version} --org wey-yu --region par --alias firefly-test-${version}"
         
         sh "ls -a"
         
-        def result = sh '''$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')'''
-        println("🙂")
-        println(result)
+        result = sh (
+          script: '$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')',
+          returnStdout: true
+        ).trim()
+        echo "🙂: ${result}"
+        
         
         sh "clever env set PORT 8080 --alias firefly-test-${version}"
         sh "clever scale --flavor pico --alias firefly-test-${version}"
