@@ -36,7 +36,6 @@ node {
         ).trim().split('"').last()
         println "🙂: ${result}"
         
-        
         sh "clever env set PORT 8080 --alias firefly-test-${version}"
         sh "clever scale --flavor pico --alias firefly-test-${version}"
         
