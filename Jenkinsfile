@@ -23,12 +23,12 @@ node {
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
         env.PATH = "${nodeHome}/bin:${env.PATH}"
         
-        sh "clever create -t node firefly-test-01 --org wey-yu --region par --alias firefly-test-01"
-        sh "clever env set PORT 8080 --alias firefly-test-01"
+        sh "clever create -t node firefly-test-01 --org wey-yu --region par --alias firefly-test-02"
+        //sh "clever env set PORT 8080 --alias firefly-test-01"
         //sh "clever scale --flavor pico --alias firefly-test-01"
         
         exit 0
-        ls
+        
         
         
         //app_id=$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')
