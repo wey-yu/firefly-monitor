@@ -20,14 +20,7 @@ node {
     } else {
       stage('Time to test 🚧') {
         println("👷 it's time to test")
-        sh "clever create -t node firefly-test --org wey-yu --region par --alias firefly-test"
-        sh "clever env set PORT 8080 --alias firefly-test"
-        sh "clever domain add firefly-test.cleverapps.io --alias firefly-test"
-        sh "clever scale --flavor pico --alias firefly-test"
-        sh '''app_id=$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')'''
-        sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/$app_id.git"
-        sh "git push clever master"
-        
+
         // call the API
       }
     }
