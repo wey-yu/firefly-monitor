@@ -30,18 +30,20 @@ node {
         
         sh "ls -a"
         
-        def inputFile = new File("./.clever.json")
-        def InputJSON = new JsonSlurper().parseText(inputFile.text)
-        InputJSON.each{ println it }
+        def result = sh '''$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')'''
+        println("🙂")
+        println(result)
         
         sh "clever env set PORT 8080 --alias firefly-test-${version}"
         sh "clever scale --flavor pico --alias firefly-test-${version}"
+        /*
         sh '''
         app_id=$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')
         echo "$app_id"
         git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/$app_id.git
         git push clever master
         '''
+        */
 
         //sh "exit 0"
       }
