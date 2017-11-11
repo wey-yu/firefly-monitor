@@ -23,7 +23,7 @@ node {
       stage('Time to test 🚧') {
         println("👷 it's time to test")
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-        def version = "34"
+        def version = "35"
         env.PATH = "${nodeHome}/bin:${env.PATH}"
         //sh "rm .clever.json"
         sh "clever create -t node firefly-test-${version} --org wey-yu --region par --alias firefly-test-${version}"
@@ -43,9 +43,12 @@ node {
         //sh '''git commit -m "🚀" '''
         
         sh "git branch"
+        sh "git checkout master"
+        sh "git branch"
                 
         //sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${result}.git"
-        sh "git push clever k33g-patch-2:master"
+        //sh "git push clever k33g-patch-2:master"
+        sh "git push clever master"
 
         //sh "exit 0"
       }
