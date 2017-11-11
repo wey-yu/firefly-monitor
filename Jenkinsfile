@@ -43,7 +43,7 @@ node {
         sh '''git commit -m "🚀" '''
                 
         //sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${result}.git"
-        sh "git push -u clever ${env.BRANCH_NAME}"
+        sh "git push -u clever k33g-patch-2"
        
        
 
