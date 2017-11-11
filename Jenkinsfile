@@ -22,9 +22,9 @@ node {
         println("👷 it's time to test")
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
         env.PATH = "${nodeHome}/bin:${env.PATH}"
-        sh "clever create -t node firefly-test-02 --org wey-yu --region par --alias firefly-test-02"
-        sh "clever env set PORT 8080 --alias firefly-test-02"
-        sh "clever scale --flavor pico --alias firefly-test-02"
+        sh "clever create -t node firefly-test-03 --org wey-yu --region par --alias firefly-test-03"
+        sh "clever env set PORT 8080 --alias firefly-test-03"
+        sh "clever scale --flavor pico --alias firefly-test-03"
         sh '''app_id=$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')'''
         sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/$app_id.git"
         sh "git push clever master"
