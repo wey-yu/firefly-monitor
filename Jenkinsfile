@@ -27,6 +27,7 @@ node {
         sh "clever env set PORT 8080 --alias firefly-test"
         sh "clever scale --flavor pico --alias firefly-test"
         
+        exit 0
         ls
         
         
