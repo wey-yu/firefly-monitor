@@ -30,8 +30,8 @@ node {
         
         sh "ls -a"
         
-        result = sh (
-          script: '$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')',
+        result = sh(
+          script: '''$(grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$')''',
           returnStdout: true
         ).trim()
         echo "🙂: ${result}"
