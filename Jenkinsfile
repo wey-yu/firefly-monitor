@@ -21,7 +21,8 @@ node {
       }
     } else {
       println("========================")
-      println(env)
+      shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+      println(shortCommit)
       println("========================")
       stage('Time to test 🚧') {
         println("👷 it's time to test your feature branch")
