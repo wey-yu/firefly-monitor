@@ -24,6 +24,7 @@ node {
       shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
       println(shortCommit)
       println("========================")
+      // I want to use it for deployment
       stage('Time to test 🚧') {
         println("👷 it's time to test your feature branch")
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
