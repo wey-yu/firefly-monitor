@@ -20,36 +20,49 @@ node {
         //it's done automatically by Clever-Cloud
       }
     } else {
-      println("========================")
-      shortCommit = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
-      println("👋 ${shortCommit}")
-      println("========================")
-      // I want to use it for deployment
-      stage('Time to test 🚧') {
-        println("👷 it's time to test your feature branch")
-        def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-        def version = "40"
-        env.PATH = "${nodeHome}/bin:${env.PATH}"
-
-        sh "clever create -t node firefly-test-${version} --org wey-yu --region par --alias firefly-test-${version}"
-       
-        def result = sh(
-          script: '''grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$' ''',
-          returnStdout: true
-        ).trim().split('"').last()
-        println "🙂: ${result}"
+      println("=======COMMIT MESSAGE========")
+      commitMessage = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
+      println("👋 ${commitMessage}")
+      println("=============================")
+      
+      if(commitMessage.startsWith("deploy")) {
         
-        sh "clever env set PORT 8080 --alias firefly-test-${version}"
-        sh "clever scale --flavor pico --alias firefly-test-${version}"
-        
-        //sh "git branch"
-        sh "git checkout master"
-        sh "git branch"
-                
-        sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${result}.git"
-        sh "git push clever master"
+        scalerName = commitMessage.split()[1]
+         // I want to use it for test deployment
+        stage('Time to test 🚧') {
+          println("👷 it's time to test your feature branch")
+          def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+          
+          env.PATH = "${nodeHome}/bin:${env.PATH}"
 
-      }
+          sh "clever create -t node ${scalerName} --org wey-yu --region par --alias ${scalerName}"
+          
+          // get the application id 
+          def applicationId = sh(
+            script: '''grep -o '"app_id": *"[^"]*"' .clever.json | grep -o '"[^"]*"$' ''',
+            returnStdout: true
+          ).trim().split('"').last()
+          
+          println "🙂: ${applicationId}"
+
+          sh "clever env set PORT 8080 --alias ${scalerName}"
+          sh "clever scale --flavor pico --alias ${scalerName}"
+
+          sh "git checkout master"
+          sh "git branch"
+
+          sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${applicationId}.git"
+          sh "git push clever master"
+        } // end stage
+      
+      } else {
+      
+        stage('nothing to do 😀') {
+          println("have a nice day")
+        }
+      
+      } // end of if
+      
     }
   }
 }
