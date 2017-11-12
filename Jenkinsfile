@@ -4,7 +4,6 @@ node {
   stage('🚧 Checkout') {
     println("☘️" + env.BRANCH_NAME)
     checkout scm
-    def commitMessage = commitMessage()
   }
   stage('📦 Build') {
     println("🚧 building project")
@@ -22,7 +21,8 @@ node {
       }
     } else {
       println("========================")
-      println(commitMessage)
+      shortCommit = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
+      println("👋 ${shortCommit}")
       println("========================")
       // I want to use it for deployment
       stage('Time to test 🚧') {
