@@ -20,10 +20,13 @@ node {
         //it's done automatically by Clever-Cloud
       }
     } else {
+      println("========================")
+      println(env)
+      println("========================")
       stage('Time to test 🚧') {
-        println("👷 it's time to test")
+        println("👷 it's time to test your feature branch")
         def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-        def version = "36"
+        def version = "40"
         env.PATH = "${nodeHome}/bin:${env.PATH}"
 
         sh "clever create -t node firefly-test-${version} --org wey-yu --region par --alias firefly-test-${version}"
