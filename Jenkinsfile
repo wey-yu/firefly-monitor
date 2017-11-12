@@ -49,7 +49,7 @@ node {
           sh "git branch"
           
           sh '''
-          if [ `git remote show` ]
+          if [ `git remote show` == "clever" ]
           then
             git remote rm clever
           fi
