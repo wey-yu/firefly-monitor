@@ -21,9 +21,7 @@ node {
       }
     } else {
       println("========================")
-      shortCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-      println(shortCommit)
-      println(env.GIT_COMMIT)
+      println(commitMessage())
       println("========================")
       // I want to use it for deployment
       stage('Time to test 🚧') {
