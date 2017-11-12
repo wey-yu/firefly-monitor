@@ -48,7 +48,12 @@ node {
           sh "git checkout master"
           sh "git branch"
           
-          sh "git remote rm clever"
+          sh '''
+          if [ `git remote show` == "clever" ]
+          then
+            git remote rm clever
+          fi
+          '''
           
           sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${applicationId}.git"
           sh "git push clever master"
