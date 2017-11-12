@@ -20,14 +20,13 @@ node {
         //it's done automatically by Clever-Cloud
       }
     } else {
-      println("=======COMMIT MESSAGE========")
+      // =======COMMIT MESSAGE========
       commitMessage = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
-      println("👋 ${commitMessage}")
-      println("=============================")
+      println("👋 commit message: ${commitMessage}")
       
       if(commitMessage.startsWith("deploy")) {
         
-        scalerName = commitMessage.split()[1]
+        scalerName = commitMessage.split(" ")[1]
          // I want to use it for test deployment
         stage('Time to test 🚧') {
           println("👷 it's time to test your feature branch")
