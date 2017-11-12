@@ -25,7 +25,7 @@ node {
       println("👋 commit message: ${commitMessage}")
       
       if(commitMessage.startsWith("deploy")) {
-        
+        //TODO, find something to destroy the scaler
         scalerName = commitMessage.split(" ")[1]
          // I want to use it for test deployment
         stage('Time to test 🚧') {
