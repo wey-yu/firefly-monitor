@@ -30,6 +30,7 @@ node {
           println("👷 it's time to test your feature branch")
           def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
           
+          //checkout scm
           env.PATH = "${nodeHome}/bin:${env.PATH}"
 
           sh "clever create -t node ${scalerName} --org wey-yu --region par --alias ${scalerName}"
@@ -45,8 +46,8 @@ node {
           sh "clever env set PORT 8080 --alias ${scalerName}"
           sh "clever scale --flavor pico --alias ${scalerName}"
 
-          sh "git checkout master"
-          sh "git branch"
+          //sh "git checkout master"
+          //sh "git branch"
           
           sh '''
           if [ `git remote show` == "clever" ]
