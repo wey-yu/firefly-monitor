@@ -57,7 +57,8 @@ node {
           '''
           
           sh "git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/${applicationId}.git"
-          sh "git push clever master"
+          //sh "git push clever master"
+          sh "git push ${env.BRANCH_NAME}:master"
         } // end stage
       
       } else {
