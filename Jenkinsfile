@@ -27,7 +27,7 @@ node {
         scalerName = commitMessage.split(" ")[1]
          // I want to use it for test deployment
         stage('Time to test 🚧') {
-          println("👷 it's time to test your feature branch")
+          println("👷 it's time to test your feature branch: ${env.BRANCH_NAME}")
           def nodeHome = tool name: 'nodejs6103', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
           
           //checkout scm
@@ -47,7 +47,8 @@ node {
           sh "clever scale --flavor pico --alias ${scalerName}"
 
           //sh "git checkout master"
-          //sh "git branch"
+          sh "git checkout ${env.BRANCH_NAME}"
+          sh "git branch"
           
           sh '''
           if [ `git remote show` == "clever" ]
