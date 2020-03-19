@@ -19,10 +19,14 @@
   },
   "homepage": "https://github.com/wey-yu/firefly-monitor#readme",
   "dependencies": {
+    "appdynamics": "^4.5.23",
     "body-parser": "^1.17.1",
+    "elastic-apm-node": "^3.5.0",
     "express": "^4.15.1",
     "firefly-consumer": "git+https://github.com/thespacefirefly/firefly-consumer.git",
-    "node-fetch": "^1.6.3"
+    "node-fetch": "^1.6.3",
+    "pg-promise": "^10.4.4",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

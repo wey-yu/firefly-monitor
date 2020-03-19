@@ -68,9 +68,29 @@
 
   <script type="text/javascript" src="/js/riot+compiler.min.js"></script>
   <script type="text/javascript" src="/js/route.min.js"></script>
+  
 
   
   <script type="text/javascript" src="tools.js"></script>
+
+  <script src='//cdn.appdynamics.com/adrum/adrum-latest.js' type='text/javascript' charset='UTF-8'></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+  
+  <script type='text/javascript' charset='UTF-8'>
+    (function(config){
+        config.appKey = 'AD-AAB-AAV-PPM';
+        config.adrumExtUrlHttp = 'http://cdn.appdynamics.com';
+        config.adrumExtUrlHttps = 'https://cdn.appdynamics.com';
+        config.beaconUrlHttp = 'http://col.eum-appdynamics.com';
+        config.beaconUrlHttps = 'https://col.eum-appdynamics.com';
+        config.xd = {enable : true};
+    })(window['adrum-config'] || (window['adrum-config'] = {}));
+     
+    (function (cfg) {
+        if (cfg.beacon) cfg.beacon.neverSendImageBeacon = true;
+        else cfg.beacon = { neverSendImageBeacon: true };
+    })(window['adrum-config'] || (window['adrum-config'] = {}));
+    </script>
   
   <!-- mount the tag(s) -->
   <script>
@@ -95,8 +115,11 @@
     riot.mount('display-charts', {broker: broker})
     //riot.mount('clever-footer', {broker: broker})
 
-
-
+  var socket = io.connect();
+  socket.on('pgnotif', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
 
   </script>
 
