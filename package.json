@@ -24,7 +24,7 @@
     "elastic-apm-node": "^3.5.0",
     "express": "^4.15.1",
     "firefly-consumer": "git+https://github.com/thespacefirefly/firefly-consumer.git",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "^2.6.1",
     "pg-promise": "^10.4.4",
     "socket.io": "^2.3.0"
   },
