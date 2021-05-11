@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/wey-yu/firefly-monitor#readme",
   "dependencies": {
-    "appdynamics": "^4.5.23",
     "body-parser": "^1.17.1",
     "elastic-apm-node": "^3.5.0",
     "express": "^4.15.1",
